@@ -1,0 +1,268 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage[latin1]{inputenc}
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{University of Bologna - Campus of Cesena - Second Faculty of
+Engineering}
+\\
+[25pt]
+% Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge A music recommendation system using association rules
+\\
+% The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Fabbri Francesco} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section{Introduction}
+Scopo del lavoro\ldots\\
+Nella prima parte\ldots\\
+Nella seconda parte\ldots\\
+
+\section{Background}
+In \cite{AdomaviciusTuzhilin} Adomavicius et al. presents an overview of
+recommender systems and describes the current generation of recommendation
+methods and state-of-art techniques that can be classified into the following
+three main categories: content-based, collaborative, and hybrid approaches.
+Since the appearance of the first papers on collaborative filtering in the
+mid-1990s the interest in this area still remains high because it constitutes a
+problem-rich research area and because of the abundance of practical
+applications. Examples of such applications include recommending books, CDs,
+movies, news, and other products from e-commerce websites. The roots of
+recommender systems can be traced back to the extensive work in cognitive
+science, approximation theory, information retrieval and forecasting theories.
+In the most common formulation, the recommendation problem is reduced to the
+problem of estimating ratings for the items that have not been seen by a user,
+this estimation is usually based on the ratings given by this user to other
+items and on some other information. Under these assumptions we can recommend to
+the user the items with the highest estimated ratings.\\
+Formally let \textit{C} be the set of all users and let \textit{S} be the set of
+all possible items that can be recommended, such as books, movies, or
+restaurants. Both the spaces \textit{C} of users and \textit{S} of possible
+items can be very large. Let \textit{u} be a utility function that measures the
+usefulness of item \textit{s} to user \textit{c}, $u : C \times S \rightarrow
+R$, where \textit{R} is a totally ordered set, usually represented by a rating,
+which indicates how a particular user liked a particular item.
+Then, for each user $c \in C$, we want to choose such item $s' \in S$ that
+maximizes the user's utility.
+$$\forall c \in C, \quad s'_c = arg \ max_{s \in S} \ u(c,s).$$
+The central problem of recommender systems lies in that utility u is usually not
+defined on the whole $C \times S$ space, but only on some subset of it,
+furthermore the recommendation engine should be able to estimate (predict) the
+ratings of the nonrated item/user combinations. Extrapolations from known to
+unknown ratings are usually done by specifying heuristics that define the
+utility function and empirically validating its performance or estimating the
+utility function that optimizes certain performance criterion, such as the mean
+square error. Once the unknown ratings are estimated, actual recommendations of
+an item to a user are made by selecting the highest rating among all the
+estimated ratings for that user, or alternatively, we can recommend the N best
+items to a user or a set of users to an item. Therefore recommender systems are
+usually classified into the following categories, based on how recommendations
+are made:
+\begin{itemize}
+  \item \textit{Content-based recommendations}: the user will be
+recommended items similar to the ones the user preferred in the past. The
+utility $u(c,s)$ of item $s$ for user $c$ is estimated based on the utilities
+$u(c,s_i)$ assigned by user $c$ to items $s_i \in S$ that are ``similar'' to
+item $s$. This approach tries to understand the commonalities among the movies
+user $c$ has rated highly in the past. Common techniques for content-based
+recommendation are heuristics, Bayesian classifiers and various machine learning
+techniques, including clustering, decision trees, and artificial neural
+networks. These techniques differ from information retrieval-based approaches in
+that they calculate utility predictions based not on a heuristic formula, such
+as a cosine similarity measure, but rather are based on a model learned from the
+underlying data using statistical learning and machine learning techniques.
+Content-based techniques are limited by the features that are explicitly
+associated with the objects that these systems recommend. While information
+retrieval techniques work well in extracting features from text documents, some
+other domains (i.e. multimedia data) have an inherent problem with automatic
+feature extraction. Another limitation is the \textit{overspecialization} and
+consists in the fact that the system can only recommend items that score highly
+against a user's profile, the user is limited to being recommended items that
+are similar to those already rated. This problem, which has also been studied in
+other domains, is often addressed by introducing some randomness. For example,
+the use of genetic algorithms has been proposed as a possible solution. Ideally,
+the user should be presented with a range of options and not with a homogeneous
+set of alternatives. Finally another issue concerns new users, in fact user has
+to rate a sufficient number of items before a content-based recommender system
+can really understand the user's preferences and present the user with reliable
+recommendations.
+
+  \item \textit{Collaborative recommendations}: the user will be
+recommended items that people with similar tastes and preferences liked in the
+past, in particular they try to predict the utility of items for a particular
+user based on the items previously rated by other users. Formally, the utility
+$u(c,s)$ of item $s$ for user $c$ is estimated based on the utilities $u(c_j,s)$
+assigned to item $s$ by those users $c_j \in C$ who are ``similar'' to user $c$.
+Algorithms for collaborative recommendations can be grouped into two general
+classes:
+\textit{memory-based (or heuristic-based)} and
+\textit{model-based}.\\
+\textit{Memory-based} algorithms essentially are heuristics that
+make rating predictions based on the entire collection of previously rated items by the users. That is, the value of the unknown rating $r_{c,s}$ for user $c$ and item $s$ is usually
+computed as an aggregate of the ratings of some other (usually, the $N$ most
+similar) users $sim(c,c')$ is essentially a distance measure and is used as a
+weight. Various approaches have been used to compute the similarity $sim(c,c')$
+between users in collaborative recommender systems. In most of these approaches,
+the similarity between two users is based on their ratings of items that both
+users have rated. The two most popular approaches are correlation and
+cosine-based.\\
+\textit{Model-based} algorithms use instead the collection of ratings to learn a
+model, which is then used to make rating predictions. Are based on the
+probability that user $c$ will give a particular rating to item $s$ given that
+user's ratings of the previously rated items. To estimate this probability, was
+proposed two alternative probabilistic models: cluster models and Bayesian
+networks.\\
+The pure collaborative recommender systems do not have some of the shortcomings
+that content-based systems have. In particular they can deal with any kind of
+content and recommend any items, even the ones that are dissimilar to those seen
+in the past. Overstay the new user limitation since in order to make accurate
+recommendations, the system must first learn the user's preferences from the
+ratings that the user gives. In addiction collaborative approaches soffer for
+new item limitations since until the new item is rated by a substantial number
+of users, the recommender system would not be able to recommend it. Finally
+another limitation is given by the \textit{sparsity}, since the number of
+ratings already obtained is usually very small compared to the number of ratings
+that need to be predicted. Also, the success of the collaborative recommender
+system depends on the availability of a critical mass of users.
+
+  \item \textit{Hybrid approaches}: these methods combine collaborative
+and content-based methods for the purpose to avoid certain limitations of both.
+Different ways was proposed in literature, most common approaches are 1)
+implementing collaborative and content-based methods separately and combining
+their predictions, 2) incorporating some content-based characteristics into a
+collaborative approach, 3) incorporating some collaborative characteristics into
+a content-based approach, and 4) constructing a general unifying model that
+incorporates both content-based and collaborative characteristics. Moreover was
+empirically demonstrated that the hybrid methods can provide more accurate
+recommendations than pure approaches.
+\end{itemize}
+
+In \cite{ChenChen} Chen et al. propose a music recommendation service based on
+content-based, collaborative and statistics-based approaches. The music objects
+of MIDI format are analyzed. Based on the perceptual properties of music
+objects, six features are extracted from each representative track such as mean
+and standard deviation of pitch values, pitch density, pitch entropy, tempo
+degree and loudness. From the trials results that the content-based approach
+give more accurate recommendation than collaborative and statistic approach.
+
+\section{Design}
+TODO\\
+
+\subsection{Business understanding}
+TODO\\
+
+\subsection{Data understanding}
+TODO\\
+
+\subsection{Data preparation}
+TODO\\
+
+\subsection{Modeling}
+TODO\\
+
+\subsection{Evaluation}
+TODO\\
+
+\subsection{Deployment}
+TODO\\
+
+\section{Conclusions}
+TODO\\
+
+\newpage
+
+\begin{thebibliography}{9}
+
+\bibitem{AdomaviciusTuzhilin}
+ Gediminas Adomavicius, Alexander Tuzhilin\\
+ \emph{``Toward the Next Generation of Recommender Systems - A Survey of the State-of-the-Art and Possible Extensions''}\\
+ \emph{IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 17, NO. 6, JUNE 2005}.\\
+
+\bibitem{KimKim}
+ Choonho Kim, Juntae Kim\\
+ \emph{``A Recommendation Algorithm Using Multi-Level Association Rules''}\\
+ \emph{IEEE/WIC International Conference on Web Intelligence (WI'03), 2003}.\\
+    
+\bibitem{ChenChen}
+ Hung-Chen Chen, Arbee L.P. Chen\\
+ \emph{``A music recommendation system based on music data grouping and user interests''}\\
+ \emph{CIKM'OI, 2001}.\\
+   
+\bibitem{LeeChoKim}
+ Seok Kee Lee, Yoon Ho Cho, Soung Hie Kim\\
+ \emph{``Collaborative filtering with ordinal scale-based implicit ratings for mobile music recommendations''}\\
+ \emph{Journal Information Sciences: an International Journal archive, June 2010}.\\
+
+\bibitem{Playlist.com}
+ \emph{http://www.playlist.com}\\
+
+\end{thebibliography}
+
+\end{document}
